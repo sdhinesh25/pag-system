@@ -1,0 +1,143 @@
+{
+  "accounts": [
+    {
+      "id": "ACC001",
+      "username": "svc_payroll",
+      "type": "service",
+      "department": "Finance",
+      "owner": "John Smith",
+      "lastLogin": "2024-11-01",
+      "riskLevel": "high",
+      "isOrphaned": false,
+      "daysSinceReview": 180
+    },
+    {
+      "id": "ACC002",
+      "username": "svc_backup",
+      "type": "service",
+      "department": "IT",
+      "owner": null,
+      "lastLogin": "2023-06-15",
+      "riskLevel": "critical",
+      "isOrphaned": true,
+      "daysSinceReview": 365
+    },
+    {
+      "id": "ACC003",
+      "username": "jane.doe",
+      "type": "user",
+      "department": "HR",
+      "owner": "Jane Doe",
+      "lastLogin": "2025-01-10",
+      "riskLevel": "medium",
+      "isOrphaned": false,
+      "daysSinceReview": 90
+    },
+    {
+      "id": "ACC004",
+      "username": "tom.admin",
+      "type": "user",
+      "department": "IT",
+      "owner": "Tom Baker",
+      "lastLogin": "2025-01-14",
+      "riskLevel": "high",
+      "isOrphaned": false,
+      "daysSinceReview": 45
+    },
+    {
+      "id": "ACC005",
+      "username": "ex_employee_raj",
+      "type": "user",
+      "department": "Finance",
+      "owner": null,
+      "lastLogin": "2024-03-01",
+      "riskLevel": "critical",
+      "isOrphaned": true,
+      "daysSinceReview": 300
+    }
+  ],
+  "reviews": [
+    {
+      "id": "REV001",
+      "accountId": "ACC001",
+      "username": "svc_payroll",
+      "reviewer": "Alice Manager",
+      "dueDate": "2025-02-01",
+      "status": "pending",
+      "decision": null,
+      "justification": null,
+      "riskLevel": "high"
+    },
+    {
+      "id": "REV002",
+      "accountId": "ACC002",
+      "username": "svc_backup",
+      "reviewer": "Alice Manager",
+      "dueDate": "2025-01-20",
+      "status": "overdue",
+      "decision": null,
+      "justification": null,
+      "riskLevel": "critical"
+    },
+    {
+      "id": "REV003",
+      "accountId": "ACC003",
+      "username": "jane.doe",
+      "reviewer": "Bob Lead",
+      "dueDate": "2025-02-10",
+      "status": "pending",
+      "decision": null,
+      "justification": null,
+      "riskLevel": "medium"
+    },
+    {
+      "id": "REV004",
+      "accountId": "ACC004",
+      "username": "tom.admin",
+      "reviewer": "Alice Manager",
+      "dueDate": "2025-01-28",
+      "status": "pending",
+      "decision": null,
+      "justification": null,
+      "riskLevel": "high"
+    },
+    {
+      "id": "REV005",
+      "accountId": "ACC005",
+      "username": "ex_employee_raj",
+      "reviewer": "Bob Lead",
+      "dueDate": "2025-01-15",
+      "status": "overdue",
+      "decision": null,
+      "justification": null,
+      "riskLevel": "critical"
+    }
+  ],
+  "auditLog": [
+    {
+      "id": "LOG001",
+      "timestamp": "2025-01-14T10:23:00Z",
+      "actor": "Alice Manager",
+      "action": "APPROVED",
+      "target": "svc_payroll",
+      "justification": "Business need confirmed"
+    },
+    {
+      "id": "LOG002",
+      "timestamp": "2025-01-13T14:05:00Z",
+      "actor": "Bob Lead",
+      "action": "REVOKED",
+      "target": "ex_contractor_mike",
+      "justification": "Contract ended"
+    },
+    {
+      "id": "LOG003",
+      "timestamp": "2025-01-12T09:00:00Z",
+      "actor": "System",
+      "action": "FLAGGED",
+      "target": "svc_backup",
+      "justification": "No owner found"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
