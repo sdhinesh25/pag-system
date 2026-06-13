@@ -139,5 +139,200 @@
       "justification": "No owner found"
     }
   ],
+  "privileged": [
+    {
+      "id": "P01",
+      "account": "breakglass_root",
+      "accountType": "Emergency/Break-Glass",
+      "privilegeBasis": "Break-Glass / Emergency",
+      "privilegeCategory": "native",
+      "basisTags": ["Active Directory", "Direct ID"],
+      "source": "Active Directory",
+      "owner": "security.team",
+      "serverApp": "all",
+      "lastLogin": "2024-01-05",
+      "riskLevel": "critical",
+      "pamStatus": "onboarded"
+    },
+    {
+      "id": "P02",
+      "account": "CORP\\appops",
+      "accountType": "Linux Sudo",
+      "privilegeBasis": "Administrative — Linux / Unix",
+      "privilegeCategory": "sudo",
+      "basisTags": ["Active Directory", "Direct ID"],
+      "source": "Active Directory",
+      "owner": "arun.kumar",
+      "serverApp": "linux02",
+      "lastLogin": "2026-05-21",
+      "riskLevel": "high",
+      "pamStatus": "pending"
+    },
+    {
+      "id": "P03",
+      "account": "CORP\\auditadmin",
+      "accountType": "Domain Admin",
+      "privilegeBasis": "Administrative — Directory",
+      "privilegeCategory": "group",
+      "basisTags": ["Active Directory", "Group · Domain Admins"],
+      "source": "Active Directory",
+      "owner": "grace.kim",
+      "serverApp": "linux03",
+      "lastLogin": "2026-05-28",
+      "riskLevel": "critical",
+      "pamStatus": "onboarded"
+    },
+    {
+      "id": "P04",
+      "account": "CORP\\contractor1",
+      "accountType": "Domain Admin",
+      "privilegeBasis": "Administrative — Directory",
+      "privilegeCategory": "group",
+      "basisTags": ["Active Directory", "Group · Domain Admins"],
+      "source": "Active Directory",
+      "owner": "ext.contractor",
+      "serverApp": "linux01",
+      "lastLogin": "2026-05-21",
+      "riskLevel": "critical",
+      "pamStatus": "onboarded"
+    },
+    {
+      "id": "P05",
+      "account": "CORP\\eadmin",
+      "accountType": "Enterprise Admin",
+      "privilegeBasis": "Administrative — Directory",
+      "privilegeCategory": "group",
+      "basisTags": ["Active Directory", "Group · Enterprise Admins"],
+      "source": "Active Directory",
+      "owner": "susan.lee",
+      "serverApp": "linux-dc01",
+      "lastLogin": "2026-05-25",
+      "riskLevel": "critical",
+      "pamStatus": "pending"
+    },
+    {
+      "id": "P06",
+      "account": "CORP\\ealegacy",
+      "accountType": "Enterprise Admin",
+      "privilegeBasis": "Administrative — Directory",
+      "privilegeCategory": "group",
+      "basisTags": ["Active Directory", "Group · Enterprise Admins"],
+      "source": "Active Directory",
+      "owner": null,
+      "serverApp": "linux-dc01",
+      "lastLogin": "2025-09-01",
+      "riskLevel": "critical",
+      "pamStatus": "not-onboarded"
+    },
+    {
+      "id": "P07",
+      "account": "CORP\\jdoe",
+      "accountType": "Domain Admin",
+      "privilegeBasis": "Administrative — Directory",
+      "privilegeCategory": "group",
+      "basisTags": ["Active Directory", "Group · Domain Admins"],
+      "source": "Active Directory",
+      "owner": "john.doe",
+      "serverApp": "linux01",
+      "lastLogin": "2026-05-29",
+      "riskLevel": "critical",
+      "pamStatus": "onboarded"
+    },
+    {
+      "id": "P08",
+      "account": "CORP\\svcadmin",
+      "accountType": "Domain Admin",
+      "privilegeBasis": "Administrative — Directory",
+      "privilegeCategory": "group",
+      "basisTags": ["Active Directory", "Group · Domain Admins"],
+      "source": "Active Directory",
+      "owner": "deepa.r",
+      "serverApp": "linux04",
+      "lastLogin": "2026-05-30",
+      "riskLevel": "critical",
+      "pamStatus": "onboarded"
+    },
+    {
+      "id": "P09",
+      "account": "svc_shared1",
+      "accountType": "Shared Account",
+      "privilegeBasis": "Administrative — Directory",
+      "privilegeCategory": "group",
+      "basisTags": ["Active Directory", "Group · Server Operators"],
+      "source": "Active Directory",
+      "owner": "ops.team",
+      "serverApp": "app-srv01",
+      "lastLogin": "2026-05-12",
+      "riskLevel": "medium",
+      "pamStatus": "onboarded"
+    },
+    {
+      "id": "P10",
+      "account": "svc_shared2",
+      "accountType": "Shared Account",
+      "privilegeBasis": "Administrative — Directory",
+      "privilegeCategory": "group",
+      "basisTags": ["Active Directory", "Group · Server Operators"],
+      "source": "Active Directory",
+      "owner": "ops.team",
+      "serverApp": "app-srv02",
+      "lastLogin": "2026-05-18",
+      "riskLevel": "medium",
+      "pamStatus": "onboarded"
+    },
+    {
+      "id": "P11",
+      "account": "svc_shared3",
+      "accountType": "Shared Account",
+      "privilegeBasis": "Administrative — Directory",
+      "privilegeCategory": "group",
+      "basisTags": ["Active Directory", "Group · Server Operators"],
+      "source": "Active Directory",
+      "owner": "ops.team",
+      "serverApp": "app-srv03",
+      "lastLogin": "2026-04-30",
+      "riskLevel": "medium",
+      "pamStatus": "pending"
+    },
+    {
+      "id": "P12",
+      "account": "CORP\\dbsudo",
+      "accountType": "Linux Sudo",
+      "privilegeBasis": "Administrative — Linux / Unix",
+      "privilegeCategory": "sudo",
+      "basisTags": ["Active Directory", "Sudo · dba"],
+      "source": "Active Directory",
+      "owner": "vimal.s",
+      "serverApp": "db-srv01",
+      "lastLogin": "2026-05-27",
+      "riskLevel": "high",
+      "pamStatus": "onboarded"
+    }
+  ],
+  "dashboardSummary": {
+    "totalAccounts": 18,
+    "inventoryBreakdown": [
+      {
+        "label": "Domain Accounts",
+        "description": "User accounts managed in Active Directory",
+        "count": 12
+      },
+      {
+        "label": "Sudo Accounts",
+        "description": "Linux sudo / command grants",
+        "count": 2
+      },
+      {
+        "label": "Shared Accounts",
+        "description": "Shared / generic accounts",
+        "count": 3
+      },
+      {
+        "label": "Break-Glass Accounts",
+        "description": "Emergency break-glass accounts",
+        "count": 1
+      }
+    ]
+  },
   "$schema": "./node_modules/json-server/schema.json"
 }

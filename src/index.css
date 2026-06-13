@@ -1,3 +1,120 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — one set of semantic variables per theme.            */
+/* Values are space-separated RGB channels so Tailwind's <alpha-value> */
+/* (e.g. bg-surface/60) works.                                         */
+/* ------------------------------------------------------------------ */
+@layer base {
+  :root {
+    --canvas: 246 248 251; /* app background */
+    --surface: 255 255 255; /* cards, panels */
+    --elevated: 248 250 252; /* table headers, insets */
+    --surface-hover: 241 245 249;
+    --line: 226 232 240; /* hairline borders */
+    --line-strong: 203 213 225;
+    --text-strong: 15 23 42; /* primary text */
+    --text-muted: 71 85 105; /* secondary text */
+    --text-subtle: 148 163 184; /* tertiary / labels */
+    --accent: 37 99 235; /* electric blue (blue-600) */
+    --accent-hover: 29 78 216; /* blue-700 */
+    --accent-soft: 219 234 254; /* blue-100 */
+    --accent-on: 255 255 255;
+    --shadow-color: 15 23 42;
+    color-scheme: light;
+  }
+
+  .dark {
+    --canvas: 8 11 18; /* #080b12 */
+    --surface: 18 24 38; /* #121826 */
+    --elevated: 14 20 32; /* #0e1420 */
+    --surface-hover: 22 29 43; /* #161d2b */
+    --line: 31 39 51; /* #1f2733 */
+    --line-strong: 45 55 72;
+    --text-strong: 241 245 249;
+    --text-muted: 154 164 178;
+    --text-subtle: 107 114 128;
+    --accent: 59 130 246; /* blue-500 — brighter on dark */
+    --accent-hover: 96 165 250; /* blue-400 */
+    --accent-soft: 30 58 138; /* blue-900, used with low opacity */
+    --accent-on: 255 255 255;
+    --shadow-color: 0 0 0;
+    color-scheme: dark;
+  }
+
+  html {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-canvas text-strong;
+  }
+
+  /* Smoothly cross-fade structural colors when the theme flips. */
+  body,
+  body * {
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.15s ease,
+      fill 0.2s ease,
+      stroke 0.2s ease;
+  }
+
+  /* Consistent, accessible focus ring on the accent color. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent/60 ring-offset-2 ring-offset-canvas;
+  }
+
+  /* Refined scrollbars. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--line-strong)) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: rgb(var(--line-strong));
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--text-subtle));
+    background-clip: content-box;
+  }
+}
+
+@layer components {
+  /* Skeleton shimmer for loading states. */
+  .skeleton {
+    @apply relative overflow-hidden rounded-md bg-surface-hover;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(var(--text-subtle) / 0.12),
+      transparent
+    );
+    animation: shimmer 1.4s infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::after,
+  *::before {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
