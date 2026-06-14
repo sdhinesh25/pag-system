@@ -335,25 +335,24 @@ function AiRiskAnalysis({ account }: { account: Account }) {
   async function generate() {
     setStatus('loading')
     setAnalysis('')
-    const prompt = `You are a PAG security analyst. Analyze this privileged account and give exactly 2 sentences: first sentence is the risk summary, second sentence is the recommended action. Account: ${account.username}, Type: ${account.accountType}, Risk Level: ${account.riskLevel}, PAM Status: ${account.pamStatus}, Days Since Review: ${account.daysSinceReview}, Is Orphaned: ${account.isOrphaned}, Owner: ${account.owner ?? 'Unassigned'}. Be concise and professional.`
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      // Calls our own serverless function, which holds the Anthropic key server-side.
+      const res = await fetch('/api/analyze', {
         method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          'x-api-key': import.meta.env.VITE_ANTHROPIC_KEY as string,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true',
-        },
+        headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 300,
-          messages: [{ role: 'user', content: prompt }],
+          username: account.username,
+          accountType: account.accountType,
+          riskLevel: account.riskLevel,
+          pamStatus: account.pamStatus,
+          daysSinceReview: account.daysSinceReview,
+          isOrphaned: account.isOrphaned,
+          owner: account.owner,
         }),
       })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
-      const text: string | undefined = data?.content?.[0]?.text?.trim()
+      const text: string | undefined = data?.text?.trim()
       if (!text) throw new Error('Empty response')
       setAnalysis(text)
       setStatus('done')
