@@ -2,6 +2,7 @@
 import { useLocation } from 'react-router-dom'
 import { ChevronRight } from './icons'
 import { ThemeToggle } from './ui'
+import { useAuth } from '../auth/AuthProvider'
 
 function titleFor(pathname: string): string {
   if (pathname.startsWith('/dashboard')) return 'Dashboard'
@@ -14,7 +15,9 @@ function titleFor(pathname: string): string {
 
 export default function TopBar() {
   const { pathname } = useLocation()
+  const { actor } = useAuth()
   const title = titleFor(pathname)
+  const initials = actor.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase() || 'PA'
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-line bg-surface/80 px-6 backdrop-blur">
@@ -27,7 +30,7 @@ export default function TopBar() {
       <div className="flex items-center gap-2">
         <ThemeToggle />
         <span className="ml-1 flex h-9 w-9 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-on">
-          AM
+          {initials}
         </span>
       </div>
     </header>

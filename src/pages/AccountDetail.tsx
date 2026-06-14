@@ -9,10 +9,10 @@ import ConfirmModal from '../components/ConfirmModal'
 import ApiError from '../components/ApiError'
 import { Button, Card, CertPill, OverdueTag, PageSkeleton, RiskPill, Tag } from '../components/ui'
 import { ChevronLeft, CheckIcon, AlertIcon, UsersIcon, ShieldIcon, FlowIcon, ListIcon, SparkleIcon } from '../components/icons'
-
-const CURRENT_USER = 'alice.manager'
+import { useAuth } from '../auth/AuthProvider'
 
 export default function AccountDetail() {
+  const { actor } = useAuth()
   const { id = '' } = useParams()
   const [account, setAccount] = useState<Account | null>(null)
   const [history, setHistory] = useState<AuditEntry[]>([])
@@ -46,7 +46,7 @@ export default function AccountDetail() {
     if (!account || !pending) return
     setBusy(true)
     try {
-      const updated = await decideAccount(account, pending, justification, CURRENT_USER)
+      const updated = await decideAccount(account, pending, justification, actor)
       setAccount(updated)
       loadHistory(updated.username)
       // Keep the two halves in sync: advance this account's open review workflow.

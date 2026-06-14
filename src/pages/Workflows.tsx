@@ -9,10 +9,10 @@ import ApiError from '../components/ApiError'
 import ConfirmModal from '../components/ConfirmModal'
 import { Button, Card, PageSkeleton } from '../components/ui'
 import { CheckIcon, AlertIcon, SearchIcon } from '../components/icons'
-
-const CURRENT_USER = 'alice.manager'
+import { useAuth } from '../auth/AuthProvider'
 
 export default function Workflows() {
+  const { actor: CURRENT_USER } = useAuth()
   const [workflows, setWorkflows] = useState<Workflow[]>([])
   const [accounts, setAccounts] = useState<Account[]>([])
   const [loading, setLoading] = useState(true)

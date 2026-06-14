@@ -1,6 +1,7 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { GridIcon, UsersIcon, FlowIcon, ListIcon } from './icons'
 import { ShieldIcon as Brand } from './icons'
+import { useAuth } from '../auth/AuthProvider'
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: GridIcon },
@@ -47,17 +48,43 @@ export default function Sidebar() {
       </nav>
 
       {/* footer */}
-      <div className="border-t border-line p-3">
-        <div className="flex items-center gap-3 rounded-lg px-3 py-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-soft/50 text-xs font-bold text-accent dark:bg-accent/20">
-            AM
-          </span>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-medium text-strong">alice.manager</p>
-            <p className="truncate text-[11px] text-subtle">Access Reviewer</p>
-          </div>
-        </div>
-      </div>
+      <SidebarUser />
     </aside>
+  )
+}
+
+function SidebarUser() {
+  const { user, actor, signOut } = useAuth()
+  const navigate = useNavigate()
+  const initials = actor.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase() || 'PA'
+
+  async function handleSignOut() {
+    await signOut()
+    navigate('/login', { replace: true })
+  }
+
+  return (
+    <div className="border-t border-line p-3">
+      <div className="flex items-center gap-3 rounded-lg px-3 py-2">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-soft/50 text-xs font-bold text-accent dark:bg-accent/20">
+          {initials}
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium text-strong">{actor}</p>
+          <p className="truncate text-[11px] text-subtle">{user?.email ?? 'Access Reviewer'}</p>
+        </div>
+        <button
+          onClick={handleSignOut}
+          title="Sign out"
+          aria-label="Sign out"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-subtle transition-colors hover:bg-surface-hover hover:text-red-500"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <path d="m16 17 5-5-5-5M21 12H9" />
+          </svg>
+        </button>
+      </div>
+    </div>
   )
 }
