@@ -8,7 +8,7 @@ import Donut, { type DonutSegment } from '../components/Donut'
 import BarChart, { type BarItem } from '../components/BarChart'
 import ApiError from '../components/ApiError'
 import { Card, PageSkeleton, RiskPill, PamPill } from '../components/ui'
-import { ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight, FilterIcon, SearchIcon } from '../components/icons'
+import { ChevronDown, ChevronLeft, ChevronRight, FilterIcon, SearchIcon } from '../components/icons'
 
 const RISK_COLORS: Record<RiskLevel, string> = {
   critical: '#ef4444',
@@ -89,9 +89,6 @@ export default function Dashboard() {
     <div className="space-y-5">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-strong">Privileged Access Governance</h1>
-        <p className="mt-1 text-sm text-muted">
-          Access-control evidence for MAS TRM, IM8, ISO 27001 (A.9), NIST 800-53 (AC), SOX and PCI-DSS.
-        </p>
         {(() => {
           const overdue = scoped.filter((a) => a.isOverdue).length
           return overdue > 0 ? (
@@ -320,42 +317,45 @@ function InventoryTable({ accounts }: { accounts: Account[] }) {
           <table className="w-full text-left text-sm">
             <thead className="border-b border-line bg-elevated text-[11px] font-semibold uppercase tracking-wider text-muted">
               <tr>
-                {['Account', 'Privilege Basis', 'Source', 'Owner', 'Server / App', 'Last Login', 'Risk', 'PAM', 'Details'].map((h, i, arr) => (
+                {['Account', 'Type & Source', 'Server / App', 'Last Login', 'Risk', 'PAM', 'Details'].map((h, i, arr) => (
                   <th key={i} className={`whitespace-nowrap px-4 py-3 ${i === arr.length - 1 ? 'text-right' : ''}`}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-line">
               {rows.map((a) => (
-                <tr key={a.id} className="transition-colors hover:bg-surface-hover">
+                <tr key={a.id} className="group transition-colors hover:bg-surface-hover">
                   <td className="px-4 py-3">
-                    <Link to={`/accounts/${a.id}`} className="font-medium text-strong hover:text-accent">{a.username}</Link>
-                    <div className="text-xs text-subtle">{a.accountType}</div>
+                    <Link to={`/accounts/${a.id}`} className="flex items-center gap-3">
+                      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold ${avatarTone(a)}`}>
+                        {initials(a.username)}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block truncate font-mono font-medium text-strong group-hover:text-accent">{a.username}</span>
+                        <span className="block truncate text-xs text-subtle">
+                          {a.owner ? `Owner: ${a.owner}` : <span className="font-medium text-amber-500">⚠ Unassigned owner</span>}
+                        </span>
+                      </span>
+                    </Link>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="font-medium text-muted">{a.privilegeCategory}</div>
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      <span className="rounded border border-line bg-surface-hover px-1.5 py-0.5 text-[10px] text-subtle">{a.sourceSystem}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-muted">{a.sourceSystem}</td>
-                  <td className="px-4 py-3">
-                    {a.owner ? <span className="text-muted">{a.owner}</span> : <span className="font-medium text-amber-500">⚠ Unassigned</span>}
+                    <span className="block text-strong">{a.accountType}</span>
+                    <span className="block text-xs text-subtle">{a.sourceSystem}</span>
                   </td>
                   <td className="px-4 py-3 text-muted">{a.server}</td>
                   <td className="px-4 py-3 text-muted">{formatDate(a.lastLogin)}</td>
                   <td className="px-4 py-3"><RiskPill level={a.riskLevel} /></td>
                   <td className="px-4 py-3"><PamPill status={a.pamStatus} /></td>
                   <td className="px-4 py-3 text-right">
-                    <Link to={`/accounts/${a.id}`} className="inline-flex text-subtle transition-colors hover:text-accent" title="View details">
-                      <ArrowUpRight width={16} height={16} />
+                    <Link to={`/accounts/${a.id}`} className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-subtle transition-colors hover:bg-accent/10 hover:text-accent" aria-label="View details">
+                      <ChevronRight width={16} height={16} />
                     </Link>
                   </td>
                 </tr>
               ))}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="px-4 py-12 text-center text-subtle">No privileged accounts match the current filters.</td>
+                  <td colSpan={7} className="px-4 py-12 text-center text-subtle">No privileged accounts match the current filters.</td>
                 </tr>
               )}
             </tbody>
@@ -526,6 +526,16 @@ function formatDate(iso: string): string {
   const [y, m, d] = iso.split('-')
   if (!y || !m || !d) return iso
   return `${d}/${m}/${y}`
+}
+function initials(username: string): string {
+  const part = username.split('\\').pop() ?? username
+  return part.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase() || 'AC'
+}
+// Avatar tint echoes severity so the eye lands on risky accounts first.
+function avatarTone(a: Account): string {
+  if (a.isOrphaned || a.ownerTerminated) return 'bg-red-500/15 text-red-500'
+  if (a.riskLevel === 'critical' || a.riskLevel === 'high') return 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
+  return 'bg-accent/10 text-accent'
 }
 function describeType(t: string): string {
   switch (t) {
